@@ -28,6 +28,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { askGPT } from '@/lib/gpt';
 const App: React.FC = () => {
 const router = useRouter();
 // State for the multi-step form
@@ -60,6 +61,8 @@ delete newErrors[name];
 setErrors(newErrors);
 }
 };
+
+
 // Handle step changes
 const handleNextStep = () => {
 const newErrors: Record<string, string> = {};
@@ -201,11 +204,55 @@ images: updatedImages,
 imageUrls: updatedImageUrls
 });
 };
+const [aiResponse, setAiResponse] = useState("");
+const [loading, setLoading] = useState(false);
 const handleSubmit = () => {
 // Here you would typically send the data to your backend
 console.log("Project submitted:", formData);
 // Redirect to projects page or show success message
 alert("Project successfully created!");
+
+
+
+
+//  CHATGPT API Call 
+};
+
+const handleSubmitToGPT = async () => {
+  try {
+    setLoading(true);
+    const formattedPrompt = `
+Given the following project details, generate:
+
+1. **Learning Objectives** (3 bullet points)
+2. **Required Materials** (3 bullet points)
+3. **Step-by-Step Guidance** (5 steps)
+   - Each step should include:
+     a. A short, clear task title (e.g., "Design data structure for finances")
+     b. A subtext that acts as an AI hint for the step (e.g., "Additional guidance for this step will appear here as you progress")
+
+### Project Title
+${formData.title}
+
+### Description
+${formData.description}
+
+### Steps
+${formData.steps.map((s, i) => `Step ${i + 1}: ${s.title} - ${s.description}`).join('\n')}
+
+### Materials
+${formData.materials.map((m) => m.name).join(', ')}
+
+Please return the output clearly under three sections: "Learning Objectives", "Required Materials", and "Step-by-Step Guidance" with AI hint included per step.
+    `;
+    const response = await askGPT(formattedPrompt);
+    setAiResponse(response);
+  } catch (error) {
+    console.error(error);
+    alert("Failed to get response from GPT");
+  } finally {
+    setLoading(false);
+  }
 };
 const handleSaveDraft = () => {
 // Save current form state as draft
@@ -1166,19 +1213,24 @@ className="!rounded-button whitespace-nowrap"
 <i className="far fa-save mr-2"></i> Save Draft
 </Button>
 {currentStep < 6 ? (
-<Button
-onClick={handleNextStep}
-className="!rounded-button whitespace-nowrap"
->
-Next Step <i className="fas fa-arrow-right ml-2"></i>
-</Button>
+  <Button
+    onClick={handleNextStep}
+    className="!rounded-button whitespace-nowrap"
+  >
+    Next Step <i className="fas fa-arrow-right ml-2"></i>
+  </Button>
 ) : (
-<Button
-onClick={handleSubmit}
-className="bg-green-600 hover:bg-green-700 !rounded-button whitespace-nowrap"
->
-<i className="fas fa-check mr-2"></i> Submit Project
-</Button>
+  <div className="space-y-4">
+    <Button onClick={handleSubmitToGPT} disabled={loading} className="!rounded-button whitespace-nowrap">
+      {loading ? "Thinking..." : "Ask GPT"}
+    </Button>
+    {aiResponse && (
+      <div className="mt-4 p-4 bg-gray-100 rounded-lg border">
+        <h3 className="font-semibold mb-2">GPT Suggestions</h3>
+        <p className="whitespace-pre-line">{aiResponse}</p>
+      </div>
+    )}
+  </div>
 )}
 </div>
 </div>
