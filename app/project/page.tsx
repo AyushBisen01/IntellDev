@@ -222,29 +222,56 @@ const handleSubmitToGPT = async () => {
   try {
     setLoading(true);
     const formattedPrompt = `
-Given the following project details, generate:
+You are an AI that helps students and builders generate clean project documentation.
 
-1. **Learning Objectives** (3 bullet points)
-2. **Required Materials** (3 bullet points)
-3. **Step-by-Step Guidance** (5 steps)
-   - Each step should include:
-     a. A short, clear task title (e.g., "Design data structure for finances")
-     b. A subtext that acts as an AI hint for the step (e.g., "Additional guidance for this step will appear here as you progress")
+Return the output as a plain, readable block of text — not in Markdown. Do not include symbols like ##, **, or *.
 
-### Project Title
-${formData.title}
+Please return the following sections, separated by clear line breaks:
 
-### Description
-${formData.description}
+1. Project Title: [Text]
 
-### Steps
+2. Description: [One short paragraph explaining what this project does]
+
+3. Learning Objectives:
+- List 3 points describing what the user will learn or build.
+
+4. Required Materials:
+- List 3–5 items, including any tools, software, or components.
+
+5. Step-by-Step Guidance:
+- List 5 main steps. Each step should include:
+  a. A short title
+  b. A single helpful AI hint beneath it
+
+6. Detailed Steps:
+- For each main step above, provide a more granular breakdown (sub-steps or instructions).
+
+7. Timeline Estimate:
+- Break the project down into phases and estimated time (e.g., setup: 30 mins, coding: 1 hour...)
+
+8. Tool/Hardware Costs (if applicable):
+- Mention estimated prices next to hardware if it's a hardware project.
+
+9. Suggested Platforms (to build, test, host, or share):
+- List websites like TinkerCAD, GitHub, Replit, etc. with a short note.
+
+10. Tips & Troubleshooting:
+- List 3–5 helpful tips or common issues with their solutions.
+
+Avoid all Markdown formatting. Return it as cleanly structured text, suitable for rendering in UI cards.
+
+Project Title: ${formData.title}
+
+Description: ${formData.description}
+
+Steps:
 ${formData.steps.map((s, i) => `Step ${i + 1}: ${s.title} - ${s.description}`).join('\n')}
 
-### Materials
+Materials:
 ${formData.materials.map((m) => m.name).join(', ')}
 
-Please return the output clearly under three sections: "Learning Objectives", "Required Materials", and "Step-by-Step Guidance" with AI hint included per step.
-    `;
+Difficulty Level: ${formData.difficulty}
+`;
     const response = await askGPT(formattedPrompt);
     setAiResponse(response);
   } catch (error) {
@@ -1225,10 +1252,117 @@ className="!rounded-button whitespace-nowrap"
       {loading ? "Thinking..." : "Ask GPT"}
     </Button>
     {aiResponse && (
-      <div className="mt-4 p-4 bg-gray-100 rounded-lg border">
-        <h3 className="font-semibold mb-2">GPT Suggestions</h3>
-        <p className="whitespace-pre-line">{aiResponse}</p>
-      </div>
+      (() => {
+        // Helper to parse the plain text aiResponse into sections
+        const sectionOrder = [
+          { key: 'Project Title', emoji: '🏷️', color: 'text-indigo-700' },
+          { key: 'Description', emoji: '📝', color: 'text-blue-600' },
+          { key: 'Learning Objectives', emoji: '🎯', color: 'text-pink-600' },
+          { key: 'Required Materials', emoji: '🧰', color: 'text-green-600' },
+          { key: 'Step-by-Step Guidance', emoji: '🛠️', color: 'text-yellow-600' },
+          { key: 'Detailed Steps', emoji: '📝', color: 'text-orange-500' },
+          { key: 'Timeline Estimate', emoji: '⏱️', color: 'text-purple-600' },
+          { key: 'Tool/Hardware Costs', emoji: '💸', color: 'text-red-600' },
+          { key: 'Suggested Platforms', emoji: '🌐', color: 'text-cyan-600' },
+          { key: 'Tips & Troubleshooting', emoji: '💡', color: 'text-amber-600' },
+        ];
+        // Split by double line breaks and map to section
+        const lines: string[] = aiResponse.split(/\n\s*\n/);
+        const sectionMap: { [key: string]: string } = {};
+        let lastKey: string | null = null;
+        lines.forEach((block: string) => {
+          const match = block.match(/^([\w &\/]+):\s*([\s\S]*)/);
+          if (match) {
+            const key = match[1].trim();
+            sectionMap[key] = match[2].trim();
+            lastKey = key;
+          } else if (lastKey !== null) {
+            sectionMap[lastKey] += '\n' + block.trim();
+          }
+        });
+        return (
+          <Card className="bg-white shadow-md border border-gray-200 relative mt-6">
+            <div className="p-6 space-y-6">
+              {/* 🎯 Top-right Save & Share Buttons */}
+              <div className="absolute top-4 right-4 flex gap-2">
+                <Button variant="outline" size="sm" className="!rounded-button text-sm">
+                  <i className="fas fa-bookmark mr-1" /> Save for Later
+                </Button>
+                <Button variant="outline" size="sm" className="!rounded-button text-sm">
+                  <i className="fas fa-share-alt mr-1" /> Share
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {sectionOrder.map(({ key, emoji, color }) => {
+                  const content = sectionMap[key];
+                  if (!content) return null;
+                  // Render lists for certain sections
+                  if ([
+                    'Learning Objectives',
+                    'Required Materials',
+                    'Tips & Troubleshooting',
+                    'Suggested Platforms',
+                    'Detailed Steps',
+                  ].includes(key)) {
+                    const items: string[] = content.split(/\n|\r/).filter((l: string) => l.trim()).map((l: string) => l.replace(/^[-•]\s*/, ''));
+                    return (
+                      <div key={key}>
+                        <span className={`text-lg font-bold ${color}`}>{emoji} {key}:</span>
+                        <ul className="list-disc list-inside text-gray-700 pl-4">
+                          {items.map((item: string, i: number) => <li key={i}>{item}</li>)}
+                        </ul>
+                      </div>
+                    );
+                  }
+                  // Render steps as ordered list
+                  if (key === 'Step-by-Step Guidance') {
+                    // Try to split steps by number or dash
+                    const stepBlocks: string[] = content.split(/\n(?=\d+\.|- )/).filter((l: string) => l.trim());
+                    return (
+                      <div key={key}>
+                        <span className={`text-lg font-bold ${color}`}>{emoji} {key}:</span>
+                        <ol className="list-decimal list-inside text-gray-700 pl-4">
+                          {stepBlocks.map((step: string, i: number) => <li key={i}>{step.trim()}</li>)}
+                        </ol>
+                      </div>
+                    );
+                  }
+                  // Render everything else as a paragraph
+                  return (
+                    <div key={key}>
+                      <span className={`text-lg font-bold ${color}`}>{emoji} {key}:</span>
+                      <div className="text-gray-700 mt-1 whitespace-pre-line">{content}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* 📥 Download & Start Buttons */}
+              <div className="pt-6 border-t flex justify-between items-center flex-wrap gap-4">
+                <div className="space-x-3">
+                  <Button
+                    onClick={() => {
+                      const blob = new Blob([aiResponse], { type: 'text/plain' });
+                      const link = document.createElement('a');
+                      link.href = URL.createObjectURL(blob);
+                      link.download = `${formData.title || 'project'}-summary.txt`;
+                      link.click();
+                    }}
+                    className="bg-indigo-600 text-white text-sm px-4 py-2 !rounded-button hover:bg-indigo-700"
+                  >
+                    📩 Download Project Summary
+                  </Button>
+                  <Button
+                    className="bg-green-600 text-white text-sm px-4 py-2 !rounded-button hover:bg-green-700"
+                    onClick={() => alert("Project started!")}
+                  >
+                    🚀 Start Project
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        );
+      })()
     )}
   </div>
 )}
