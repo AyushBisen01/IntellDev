@@ -1,0 +1,156 @@
+From 6ac6aa888e1417951a7b3b8dd6eec29441e79689 Mon Sep 17 00:00:00 2001
+From: Rakshit Kathawate <rakshitjio98@gmail.com>
+Date: Sun, 29 Jun 2025 01:38:29 +0530
+Subject: [PATCH] Added the Function to query the OPEN AI ROUTER model with the
+ generic prompt, Added new button for the same
+
+---
+ app/project/page.tsx | 76 +++++++++++++++++++++++++++++++++++++-------
+ lib/gpt.ts           | 20 ++++++++++++
+ 2 files changed, 84 insertions(+), 12 deletions(-)
+ create mode 100644 lib/gpt.ts
+
+diff --git a/app/project/page.tsx b/app/project/page.tsx
+index d86e434..994bac3 100644
+--- a/app/project/page.tsx
++++ b/app/project/page.tsx
+@@ -28,6 +28,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
+ import { Slider } from "@/components/ui/slider";
+ import { AlertCircle } from "lucide-react";
+ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
++import { askGPT } from '@/lib/gpt';
+ const App: React.FC = () => {
+ const router = useRouter();
+ // State for the multi-step form
+@@ -60,6 +61,8 @@ delete newErrors[name];
+ setErrors(newErrors);
+ }
+ };
++
++
+ // Handle step changes
+ const handleNextStep = () => {
+ const newErrors: Record<string, string> = {};
+@@ -201,11 +204,55 @@ images: updatedImages,
+ imageUrls: updatedImageUrls
+ });
+ };
++const [aiResponse, setAiResponse] = useState("");
++const [loading, setLoading] = useState(false);
+ const handleSubmit = () => {
+ // Here you would typically send the data to your backend
+ console.log("Project submitted:", formData);
+ // Redirect to projects page or show success message
+ alert("Project successfully created!");
++
++
++
++
++//  CHATGPT API Call 
++};
++
++const handleSubmitToGPT = async () => {
++  try {
++    setLoading(true);
++    const formattedPrompt = `
++Given the following project details, generate:
++
++1. **Learning Objectives** (3 bullet points)
++2. **Required Materials** (3 bullet points)
++3. **Step-by-Step Guidance** (5 steps)
++   - Each step should include:
++     a. A short, clear task title (e.g., "Design data structure for finances")
++     b. A subtext that acts as an AI hint for the step (e.g., "Additional guidance for this step will appear here as you progress")
++
++### Project Title
++${formData.title}
++
++### Description
++${formData.description}
++
++### Steps
++${formData.steps.map((s, i) => `Step ${i + 1}: ${s.title} - ${s.description}`).join('\n')}
++
++### Materials
++${formData.materials.map((m) => m.name).join(', ')}
++
++Please return the output clearly under three sections: "Learning Objectives", "Required Materials", and "Step-by-Step Guidance" with AI hint included per step.
++    `;
++    const response = await askGPT(formattedPrompt);
++    setAiResponse(response);
++  } catch (error) {
++    console.error(error);
++    alert("Failed to get response from GPT");
++  } finally {
++    setLoading(false);
++  }
+ };
+ const handleSaveDraft = () => {
+ // Save current form state as draft
+@@ -1166,19 +1213,24 @@ className="!rounded-button whitespace-nowrap"
+ <i className="far fa-save mr-2"></i> Save Draft
+ </Button>
+ {currentStep < 6 ? (
+-<Button
+-onClick={handleNextStep}
+-className="!rounded-button whitespace-nowrap"
+->
+-Next Step <i className="fas fa-arrow-right ml-2"></i>
+-</Button>
++  <Button
++    onClick={handleNextStep}
++    className="!rounded-button whitespace-nowrap"
++  >
++    Next Step <i className="fas fa-arrow-right ml-2"></i>
++  </Button>
+ ) : (
+-<Button
+-onClick={handleSubmit}
+-className="bg-green-600 hover:bg-green-700 !rounded-button whitespace-nowrap"
+->
+-<i className="fas fa-check mr-2"></i> Submit Project
+-</Button>
++  <div className="space-y-4">
++    <Button onClick={handleSubmitToGPT} disabled={loading} className="!rounded-button whitespace-nowrap">
++      {loading ? "Thinking..." : "Ask GPT"}
++    </Button>
++    {aiResponse && (
++      <div className="mt-4 p-4 bg-gray-100 rounded-lg border">
++        <h3 className="font-semibold mb-2">GPT Suggestions</h3>
++        <p className="whitespace-pre-line">{aiResponse}</p>
++      </div>
++    )}
++  </div>
+ )}
+ </div>
+ </div>
+diff --git a/lib/gpt.ts b/lib/gpt.ts
+new file mode 100644
+index 0000000..fdb33eb
+--- /dev/null
++++ b/lib/gpt.ts
+@@ -0,0 +1,20 @@
++const API_KEY = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
++export async function askGPT(prompt: string): Promise<string> {
++  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
++    method: "POST",
++    headers: {
++      "Authorization": `Bearer ` + API_KEY, // Put securely using env if possible
++      "Content-Type": "application/json",
++      "HTTP-Referer": "http://localhost:3000" // Use your domain in production
++    },
++    body: JSON.stringify({
++      model: "mistralai/mistral-small-3.2-24b-instruct:free",
++      messages: [{ role: "user", content: prompt }],
++    }),
++  });
++
++  if (!res.ok) throw new Error("Failed to fetch response");
++
++  const json = await res.json();
++  return json.choices[0].message.content.trim();
++}
+\ No newline at end of file
+-- 
+2.39.5 (Apple Git-154)
+
