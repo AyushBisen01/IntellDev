@@ -26,6 +26,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Bell } from "lucide-react";
 const App: React.FC = () => {
 const router = useRouter();
 // State for filters and view options
@@ -307,21 +308,22 @@ return (
 <div className="flex-shrink-0">
 <div className="flex items-center">
 <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-CN
+ID
 </div>
-<span className="ml-2 text-xl font-bold text-gray-900">Curious Nova</span>
+<span className="ml-2 text-xl font-bold text-gray-900">IntellDev</span>
 </div>
 </div>
 <nav className="ml-10 flex space-x-8">
 <a href='/' data-readdy="true" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Home</a>
 <a href="#" className="text-indigo-600 font-medium border-b-2 border-indigo-600 px-3 py-2 text-sm">Projects</a>
 <a href="#" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">My Learning</a>
+<a href="Mentor" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Mentor Access</a>
 <a href="#" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Community</a>
 </nav>
 </div>
 <div className="flex items-center space-x-4">
 <button className="text-gray-500 hover:text-gray-700 cursor-pointer">
-<i className="fas fa-bell text-lg"></i>
+  <Bell className="w-5 h-5 text-gray-500" />
 </button>
 <Avatar className="cursor-pointer">
 <img src="https://readdy.ai/api/search-image?query=Professional%2520headshot%2520of%2520a%2520young%2520diverse%2520student%2520with%2520a%2520friendly%2520smile%2520and%2520modern%2520casual%2520attire%2520against%2520a%2520clean%2520neutral%2520background%2520with%2520soft%2520lighting%2520perfect%2520for%2520a%2520profile%2520picture&width=40&height=40&seq=8&orientation=squarish" alt="User profile" />
@@ -340,7 +342,7 @@ CN
 </div>
 <div className="mt-4 md:mt-0">
 <a  data-readdy="true">
-<Button onClick={() => router.push('/project')} className="!rounded-button whitespace-nowrap">
+<Button onClick={() => router.push('/create_project')} className="!rounded-button whitespace-nowrap">
 <i className="fas fa-plus mr-2"></i> Create Project
 </Button>
 </a>
@@ -801,7 +803,9 @@ Next <i className="fas fa-chevron-right ml-1"></i>
 <>
 <DialogHeader>
 <DialogTitle className="text-2xl">{projects[selectedProject - 1].title}</DialogTitle>
-<DialogDescription>
+<DialogDescription className="text-gray-600">
+{projects[selectedProject - 1].description}
+</DialogDescription>
 <div className="flex flex-wrap gap-2 mt-2">
 <Badge className={`
 ${projects[selectedProject - 1].difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
@@ -817,7 +821,6 @@ projects[selectedProject - 1].difficulty === 'Intermediate' ? 'bg-yellow-100 tex
 {projects[selectedProject - 1].category}
 </Badge>
 </div>
-</DialogDescription>
 </DialogHeader>
 <div className="relative h-[300px] overflow-hidden rounded-md mt-4">
 <img
@@ -904,9 +907,9 @@ Start Project <i className="fas fa-arrow-right ml-2"></i>
 <div>
 <div className="flex items-center mb-4">
 <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-CN
+ID
 </div>
-<span className="ml-2 text-xl font-bold">Curious Nova</span>
+<span className="ml-2 text-xl font-bold">IntellDev</span>
 </div>
 <p className="text-gray-400 text-sm">
 Transforming learning into building, one project at a time.
@@ -963,7 +966,7 @@ Subscribe
 </div>
 <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
 <p className="text-gray-400 text-sm">
-© 2025 Curious Nova. All rights reserved.
+© 2025 IntellDev. All rights reserved.
 </p>
 <div className="flex space-x-6 mt-4 md:mt-0">
 <a href="#" className="text-gray-400 hover:text-white text-sm cursor-pointer">Terms of Service</a>

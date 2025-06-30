@@ -1,6 +1,6 @@
-# Curious Nova - Learning Project Platform
+# IntellDev - Learning Project Platform
 
-A modern, interactive platform that transforms learning into hands-on building experiences. Curious Nova helps learners create personalized projects based on their learning journey, turning concepts into practical applications.
+A modern, interactive platform that transforms learning into hands-on building experiences. IntellDev helps learners create personalized projects based on their learning journey, turning concepts into practical applications.
 
 ## 🚀 Features
 
@@ -167,4 +167,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Curious Nova** - Transforming learning into building, one project at a time. 🚀
+**IntellDev** - Transforming learning into building, one project at a time. 🚀

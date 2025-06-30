@@ -29,6 +29,57 @@ import { Slider } from "@/components/ui/slider";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { askGPT } from '@/lib/gpt';
+import {
+  Bell,
+  Rocket,
+  User,
+  Settings,
+  BookOpen,
+  Users,
+  Share,
+  Bookmark,
+  ExternalLink,
+  Check,
+  Clock,
+  Code,
+  Cpu,
+  Palette,
+  FlaskRoundIcon as Flask,
+  Lightbulb,
+  CheckCircle,
+  CuboidIcon as Cube,
+  UserPlus,
+  GraduationCap,
+  Folder,
+  LoaderPinwheelIcon as Spinner,
+  Twitter,
+  Github,
+  Linkedin,
+  Instagram,
+  Moon,
+  Sun,
+  X,
+  Search,
+  Filter,
+  GitBranch,
+  Calendar,
+  Eye,
+  Plus,
+  UserCheck,
+  Signal,
+  FileCode,
+  Puzzle,
+  GraduationCap as ChalkboardTeacher,
+  Download,
+  Play,
+  Save,
+  Flame,
+  Trophy,
+  Star,
+  Microchip,
+  Paintbrush,
+  TestTube,
+} from "lucide-react"
 const App: React.FC = () => {
 const router = useRouter();
 // State for the multi-step form
@@ -382,12 +433,15 @@ setErrors(newErrors);
 >
 <div className="flex flex-col items-center text-center">
 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-100 mb-2">
-<i className={`fas ${
-domain === 'Coding' ? 'fa-code' :
-domain === 'Hardware' ? 'fa-microchip' :
-domain === 'Design' ? 'fa-paint-brush' :
-'fa-flask'
-} text-indigo-600 text-xl`}></i>
+{domain === 'Coding' ? (
+<Code className="w-6 h-6 text-indigo-600" />
+) : domain === 'Hardware' ? (
+<Microchip className="w-6 h-6 text-indigo-600" />
+) : domain === 'Design' ? (
+<Paintbrush className="w-6 h-6 text-indigo-600" />
+) : (
+<TestTube className="w-6 h-6 text-indigo-600" />
+)}
 </div>
 <span className="font-medium">{domain}</span>
 </div>
@@ -1119,21 +1173,22 @@ return (
 <div className="flex-shrink-0">
 <div className="flex items-center">
 <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-CN
+ID
 </div>
-<span className="ml-2 text-xl font-bold text-gray-900">Curious Nova</span>
+<span className="ml-2 text-xl font-bold text-gray-900">IntellDev</span>
 </div>
 </div>
 <nav className="ml-10 flex space-x-8">
 <Link href="/" data-readdy="true" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Home</Link>
 <Link href="/projects" data-readdy="true" className="text-indigo-600 font-medium border-b-2 border-indigo-600 px-3 py-2 text-sm">Projects</Link>
 <Link href="https://readdy.ai/home/c720ef4e-af14-410b-b640-c259f294cc92/379cab85-8202-4578-92bb-4ab86c9dcf19" data-readdy="true" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">My Learning</Link>
+<Link href="Mentor" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Mentor Access</Link>
 <Link href="#" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Community</Link>
 </nav>
 </div>
 <div className="flex items-center space-x-4">
 <button className="text-gray-500 hover:text-gray-700 cursor-pointer">
-<i className="fas fa-bell text-lg"></i>
+  <Bell className="w-5 h-5 text-gray-500" />
 </button>
 <Avatar className="cursor-pointer">
 <img src="https://readdy.ai/api/search-image?query=Professional%252520headshot%252520of%252520a%252520young%252520diverse%252520student%252520with%252520a%252520friendly%252520smile%252520and%252520modern%252520casual%252520attire%252520against%252520a%252520clean%252520neutral%252520background%252520with%252520soft%252520lighting%252520perfect%252520for%252520a%252520profile%252520picture&width=40&height=40&seq=8&orientation=squarish" alt="User profile" />
@@ -1147,7 +1202,7 @@ CN
 <div className="mb-8">
 <div className="flex items-center space-x-2 mb-2">
 <a
-href="https://readdy.ai/home/c720ef4e-af14-410b-b640-c259f294cc92/8e39c929-c61b-494e-ada4-e8633877da16"
+href="/projects"
 data-readdy="true"
 className="text-indigo-600 hover:text-indigo-800 flex items-center cursor-pointer"
 >
@@ -1376,9 +1431,9 @@ className="!rounded-button whitespace-nowrap"
 <div>
 <div className="flex items-center mb-4">
 <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-bold">
-CN
+ID
 </div>
-<span className="ml-2 text-xl font-bold">Curious Nova</span>
+<span className="ml-2 text-xl font-bold">IntellDev</span>
 </div>
 <p className="text-gray-400 text-sm">
 Transforming learning into building, one project at a time.
@@ -1435,7 +1490,7 @@ Subscribe
 </div>
 <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
 <p className="text-gray-400 text-sm">
-© 2025 Curious Nova. All rights reserved.
+© 2025 IntellDev. All rights reserved.
 </p>
 <div className="flex space-x-6 mt-4 md:mt-0">
 <a href="#" className="text-gray-400 hover:text-white text-sm cursor-pointer">Terms of Service</a>
