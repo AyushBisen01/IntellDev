@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Bell } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 const App: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -43,6 +44,8 @@ const App: React.FC = () => {
     from: undefined,
     to: undefined,
   });
+
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -394,7 +397,7 @@ const App: React.FC = () => {
             </ul>
           </nav>
           <div className="p-4 border-t border-gray-200">
-            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap">
+            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap" onClick={() => router.push('/auth')}>
               <i className="fas fa-sign-out-alt"></i>
               {!sidebarCollapsed && <span className="ml-2">Logout</span>}
             </Button>

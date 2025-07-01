@@ -1,7 +1,7 @@
 'use client'
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
 import React, { useState, useEffect } from 'react';
-import { Search, Bell, Settings, GraduationCap, Clock, Calendar, MessageCircle, User, Star, CheckCircle, FileText, Share, BookOpen, Users, Eye, Send, MessageSquare } from "lucide-react";
+import { Search, Bell, Settings, GraduationCap, Clock, Calendar, MessageCircle, User, Star, CheckCircle, FileText, Share, BookOpen, Users, Eye, Send, MessageSquare, Home, Briefcase } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +18,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
+import { useRouter } from 'next/navigation';
 const App: React.FC = () => {
+const router = useRouter();
 const [searchQuery, setSearchQuery] = useState("");
 const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
 const [viewType, setViewType] = useState<"grid" | "list">("grid");
@@ -234,10 +236,18 @@ return (
 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
 <GraduationCap className="w-6 h-6 text-white" />
 </div>
-<h1 className="text-xl font-bold">ProjectMentor</h1>
+<h1 className="text-xl font-bold">Connect Mentor</h1>
 </div>
 
 <div className="flex items-center space-x-4">
+<Button variant="ghost" className="!rounded-button whitespace-nowrap" onClick={() => router.push('/')}>
+<Home className="w-4 h-4 mr-2" />
+Home
+</Button>
+<Button variant="ghost" className="!rounded-button whitespace-nowrap" onClick={() => router.push('/projects')}>
+<Briefcase className="w-4 h-4 mr-2" />
+Projects
+</Button>
 <Button variant="ghost" className="!rounded-button whitespace-nowrap">
 <Bell className="w-4 h-4 mr-2" />
 Notifications

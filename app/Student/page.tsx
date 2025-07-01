@@ -20,6 +20,7 @@ import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import * as echarts from 'echarts';
 import { Bell, Search, Filter, Plus, FileDown, MoreHorizontal, Mail, ListChecks, CalendarPlus, MessageCircle, Eye, History, Calendar, FileText, CheckCircle, Video, Trash2, Edit, ChevronUp, ChevronDown, LogOut, MoreVertical, Phone, ChevronLeft, Gauge, Users, Settings, Clock } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 const App: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -35,6 +36,7 @@ const App: React.FC = () => {
   
   const performanceChartRef = useRef<HTMLDivElement>(null);
   const courseProgressChartRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -311,7 +313,7 @@ const App: React.FC = () => {
           {
             name: 'Progress',
             type: 'bar',
-            data: selectedStudent.enrolledCourses.map(() => Math.floor(Math.random() * 30) + 70),
+            data: selectedStudent.enrolledCourses.map(() => 80),
             itemStyle: {
               color: function(params: any) {
                 const value = params.value;
@@ -481,7 +483,7 @@ const App: React.FC = () => {
             </ul>
           </nav>
           <div className="p-4 border-t border-gray-200">
-            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap">
+            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap" onClick={() => router.push('/auth')}>
               <LogOut />
               {!sidebarCollapsed && <span className="ml-2">Logout</span>}
             </Button>
@@ -736,7 +738,7 @@ const App: React.FC = () => {
                                   </Avatar>
                                   <div>
                                     <p className="font-medium">{student.name}</p>
-                                    <p className="text-xs text-gray-500">ID: STU-{Math.floor(Math.random() * 10000)}</p>
+                                    <p className="text-xs text-gray-500">ID: {student.id}</p>
                                   </div>
                                 </div>
                               </TableCell>
@@ -1109,7 +1111,7 @@ const App: React.FC = () => {
                           <div key={index} className="flex items-center justify-between">
                             <span>{course}</span>
                             <Badge className="bg-indigo-100 text-indigo-800 hover:bg-indigo-100">
-                              {['In Progress', 'Completed'][Math.floor(Math.random() * 2)]}
+                              In Progress
                             </Badge>
                           </div>
                         ))}

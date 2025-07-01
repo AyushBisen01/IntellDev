@@ -19,12 +19,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import * as echarts from 'echarts';
 import { useEffect, useRef } from 'react';
 import { Bell } from "lucide-react";
+import { useRouter } from 'next/navigation';
 const App: React.FC = () => {
 const [date, setDate] = useState<Date | undefined>(new Date());
 const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 const [isNewTaskOpen, setIsNewTaskOpen] = useState(false);
 const progressChartRef = useRef<HTMLDivElement>(null);
 const projectsChartRef = useRef<HTMLDivElement>(null);
+const router = useRouter();
 const handleCreateTask = (e: React.FormEvent) => {
 e.preventDefault();
 // Handle task creation logic here
@@ -236,7 +238,7 @@ className="p-2 rounded-full hover:bg-gray-100 cursor-pointer !rounded-button whi
 </ul>
 </nav>
 <div className="p-4 border-t border-gray-200">
-<Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap">
+<Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap" onClick={() => router.push('/auth')}>
 <i className="fas fa-sign-out-alt"></i>
 {!sidebarCollapsed && <span className="ml-2">Logout</span>}
 </Button>
