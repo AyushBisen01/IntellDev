@@ -316,8 +316,8 @@ ID
 <nav className="ml-10 flex space-x-8">
 <a href='/auth' data-readdy="true" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Home</a>
 <a href="#" className="text-indigo-600 font-medium border-b-2 border-indigo-600 px-3 py-2 text-sm">Projects</a>
-<a href="#" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">My Learning</a>
-<a href="Mentor" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Mentor Access</a>
+<a href="/My_learn" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">My Learning</a>
+<a href="/Mentor" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Mentor Access</a>
 <a href="#" className="text-gray-500 hover:text-gray-700 font-medium px-3 py-2 text-sm">Community</a>
 </nav>
 </div>

@@ -19,7 +19,7 @@ const App: React.FC = () => {
         <div className="w-full max-w-md mx-auto text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome</h1>
           <p className="text-gray-500">Join our learning community as a mentor or student</p>
-        </div>
+            </div>
 
         <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8">
           <h2 className="text-2xl font-semibold text-center mb-2">Authentication</h2>
@@ -29,7 +29,7 @@ const App: React.FC = () => {
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="signin" className="!rounded-button whitespace-nowrap cursor-pointer">Sign In</TabsTrigger>
               <TabsTrigger value="signup" className="!rounded-button whitespace-nowrap cursor-pointer">Sign Up</TabsTrigger>
-            </TabsList>
+              </TabsList>
             
             <TabsContent value="signin">
               <div className="space-y-6">
@@ -41,15 +41,15 @@ const App: React.FC = () => {
                       <Label htmlFor="student" className="flex items-center cursor-pointer">
                         <i className="fas fa-user-graduate mr-2"></i> Student
                       </Label>
-                    </div>
+                </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="mentor" id="mentor" />
                       <Label htmlFor="mentor" className="flex items-center cursor-pointer">
                         <i className="fas fa-chalkboard-teacher mr-2"></i> Mentor
                       </Label>
-                    </div>
-                  </RadioGroup>
                 </div>
+                  </RadioGroup>
+              </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -59,33 +59,33 @@ const App: React.FC = () => {
                     placeholder="Enter your email"
                     className="w-full border-gray-300 text-sm"
                   />
-                </div>
+                  </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
-                  <Input 
+                        <Input
                     id="password" 
                     type="password" 
                     placeholder="Enter your password"
                     className="w-full border-gray-300 text-sm"
                   />
-                </div>
+                      </div>
 
-                <Button 
+            <Button
                   className="w-full bg-black hover:bg-gray-800 text-white !rounded-button whitespace-nowrap cursor-pointer"
-                  onClick={() => { 
+                              onClick={() => {
                     if (role === 'student') router.push('/auth'); 
                     else if (role === 'mentor') router.push('/Mentor_dashboard'); 
                   }}
                 >
                   Sign in as {role}
-                </Button>
-              </div>
+                            </Button>
+                          </div>
             </TabsContent>
             
             <TabsContent value="signup">
               <div className="space-y-6">
-                <div>
+              <div>
                   <p className="font-medium mb-4">I am a:</p>
                   <RadioGroup defaultValue="student" className="flex gap-8" onValueChange={setRole}>
                     <div className="flex items-center space-x-2">
@@ -93,25 +93,25 @@ const App: React.FC = () => {
                       <Label htmlFor="student-signup" className="flex items-center cursor-pointer">
                         <i className="fas fa-user-graduate mr-2"></i> Student
                       </Label>
-                    </div>
+                </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="mentor" id="mentor-signup" />
                       <Label htmlFor="mentor-signup" className="flex items-center cursor-pointer">
                         <i className="fas fa-chalkboard-teacher mr-2"></i> Mentor
                       </Label>
-                    </div>
+              </div>
                   </RadioGroup>
-                </div>
+                        </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
-                  <Input 
+                              <Input
                     id="name" 
-                    type="text" 
+                                type="text"
                     placeholder="Enter your full name"
                     className="w-full border-gray-300 text-sm"
                   />
-                </div>
+                        </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="email-signup">Email</Label>
@@ -121,11 +121,11 @@ const App: React.FC = () => {
                     placeholder="Enter your email"
                     className="w-full border-gray-300 text-sm"
                   />
-                </div>
+                        </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="password-signup">Password</Label>
-                  <Input 
+                <Input
                     id="password-signup" 
                     type="password" 
                     placeholder="Enter your password"
@@ -133,7 +133,7 @@ const App: React.FC = () => {
                   />
                 </div>
 
-                <Button 
+                <Button
                   className="w-full bg-black hover:bg-gray-800 text-white !rounded-button whitespace-nowrap cursor-pointer"
                   onClick={() => { 
                     if (role === 'student') router.push('/auth'); 
@@ -145,8 +145,8 @@ const App: React.FC = () => {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-      </div>
+            </div>
+          </div>
     </div>
   );
 }

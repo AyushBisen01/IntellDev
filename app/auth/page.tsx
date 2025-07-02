@@ -379,7 +379,7 @@ const App: React.FC = () => {
           <div className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
               <i className="fas fa-rocket text-white"></i>
-            </div>
+        </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               IntellDev
             </h1>
@@ -679,7 +679,7 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                 <TabsTrigger value="research" className="!rounded-button">
                   Research
                 </TabsTrigger>
-              </TabsList>
+            </TabsList>
             </Tabs>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -971,7 +971,7 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                       ),
                     )}
                   </ul>
-                </div>
+                    </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     Required Materials
@@ -986,8 +986,8 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                       ),
                     )}
                   </ul>
+                    </div>
                 </div>
-              </div>
               <div className="lg:col-span-2">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Step-by-Step Guidance
@@ -1099,7 +1099,7 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                         <i className="fas fa-users mr-1"></i>
                       )}
                     {resource.type}
-                  </div>
+                </div>
                 </div>
                 <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-2">
@@ -1173,16 +1173,16 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                   <div className="flex gap-4 mb-6">
                     <div className="flex-1">
                       <div className="relative">
-                        <Input
+                  <Input 
                           type="text"
                           placeholder="Search boilerplates..."
                           className="pl-10"
                         />
                         <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                      </div>
+                </div>
                     </div>
                     <div className="flex gap-2">
-            <Button
+                <Button 
               variant="outline"
                         className="!rounded-button whitespace-nowrap"
                       >
@@ -1193,8 +1193,8 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                         className="!rounded-button whitespace-nowrap"
                       >
                         <GitBranch className="w-4 h-4 mr-2" /> Type
-                      </Button>
-                    </div>
+                </Button>
+              </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[
@@ -1362,13 +1362,13 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
               Track Your Progress
             </h2>
             <div className="space-y-8">
-              <div>
+                <div>
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-medium">Overall Completion</h3>
                   <span className="text-sm font-medium text-gray-500">65%</span>
-                </div>
+                    </div>
                 <Progress value={65} className="h-2" />
-              </div>
+                    </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-medium mb-3">Milestones</h3>
@@ -1511,13 +1511,13 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                           >
                             <X className="w-4 h-4" />
                           </Button>
-                        </div>
+                </div>
 
                         <div className="flex gap-4 mb-6">
                           <div className="flex-1">
                             <div className="relative">
-                              <Input
-                                type="text"
+                  <Input 
+                    type="text" 
                                 placeholder="Search study groups..."
                                 className="pl-10"
                               />
@@ -1539,7 +1539,7 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                               Type
                             </Button>
                           </div>
-                        </div>
+                </div>
 
                         <div className="space-y-4 mb-6">
                           {[
@@ -1631,7 +1631,7 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                               </div>
                             </div>
                           ))}
-                        </div>
+                </div>
 
                         <div className="bg-indigo-50 p-6 rounded-xl text-center">
                           <h4 className="font-semibold text-indigo-900 mb-2">
@@ -1889,12 +1889,12 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                 Get weekly updates on new projects and learning resources.
               </p>
               <div className="flex">
-                <Input
+                  <Input 
                   type="email"
                   placeholder="Your email"
                   className="bg-gray-800 border-gray-700 text-white rounded-l-lg rounded-r-none border-r-0"
                 />
-                <Button
+                <Button 
                   variant="default"
                   className="rounded-l-none !rounded-button whitespace-nowrap"
                 >
@@ -1905,8 +1905,8 @@ className="max-w-full h-auto rounded-xl shadow-2xl"
                 <i className="fab fa-cc-visa text-gray-400 text-2xl"></i>
                 <i className="fab fa-cc-mastercard text-gray-400 text-2xl"></i>
                 <i className="fab fa-cc-paypal text-gray-400 text-2xl"></i>
-            </div>
-          </div>
+        </div>
+      </div>
           </div>
           <Separator className="my-8 bg-gray-700" />
           <div className="text-center text-gray-500 text-sm">
