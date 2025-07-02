@@ -1,6 +1,6 @@
 'use client'
 // The exported code uses Tailwind CSS. Install Tailwind CSS in your dev environment to ensure all styles work.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,24 +18,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 const App: React.FC = () => {
 const [progress, setProgress] = useState(68);
-// Add custom animation class
-const style = document.createElement('style');
-style.textContent = `
-@keyframes fade-in-down {
-0% {
-opacity: 0;
-transform: translateY(-10px);
-}
-100% {
-opacity: 1;
-transform: translateY(0);
-}
-}
-.animate-fade-in-down {
-animation: fade-in-down 0.3s ease-out;
-}
-`;
-document.head.appendChild(style);
+useEffect(() => {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fade-in-down {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-down {
+      animation: fade-in-down 0.3s ease-out;
+    }
+  `;
+  document.head.appendChild(style);
+  return () => {
+    document.head.removeChild(style);
+  };
+}, []);
 const [selectedDomain, setSelectedDomain] = useState('coding');
 const [difficultyLevel, setDifficultyLevel] = useState(2);
 const [isMentorMode, setIsMentorMode] = useState(false);
@@ -57,6 +61,9 @@ const availableMentors = [
 ];
 const [isSubmitting, setIsSubmitting] = useState(false);
 const [showSuccessToast, setShowSuccessToast] = useState(false);
+const [filterApplied, setFilterApplied] = useState(false);
+const [showSaveToast, setShowSaveToast] = useState(false);
+const [dashboardTheme, setDashboardTheme] = useState('light');
 const handleScheduleSession = async () => {
 if (!newSession.mentor || !newSession.date || !newSession.time || !newSession.topic) {
 return;
@@ -205,6 +212,12 @@ return (
 Session scheduled successfully!
 </div>
 )}
+{showSaveToast && (
+<div className="fixed top-4 right-4 bg-blue-100 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg shadow-lg flex items-center z-50 animate-fade-in-down">
+<i className="fas fa-check-circle mr-2"></i>
+Preferences saved!
+</div>
+)}
 {/* Header */}
 <header className="border-b border-gray-200 bg-white sticky top-0 z-10">
 <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -214,20 +227,12 @@ Session scheduled successfully!
 <span>ProjectGen</span>
 </div>
 <nav className="hidden md:flex ml-8 space-x-6">
-<a href="#" className="text-gray-600 hover:text-blue-600">Dashboard</a>
-<a href="#" className="text-gray-600 hover:text-blue-600">Projects</a>
-<a href="#" className="text-gray-600 hover:text-blue-600">Resources</a>
-{isMentorMode && <a href="#" className="text-blue-600 font-medium">Mentor Dashboard</a>}
+<a href="/auth" className="text-gray-600 hover:text-blue-600">Dashboard</a>
+<a href="/projects" className="text-gray-600 hover:text-blue-600">Projects</a>
+<a href="/resources" className="text-gray-600 hover:text-blue-600">Resources</a>
 </nav>
 </div>
 <div className="flex items-center space-x-4">
-<button
-onClick={() => setIsMentorMode(!isMentorMode)}
-className="hidden md:flex items-center px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors !rounded-button whitespace-nowrap"
->
-<i className={`fas fa-${isMentorMode ? 'chalkboard-teacher' : 'user-graduate'} mr-2`}></i>
-{isMentorMode ? 'Mentor Mode' : 'Student Mode'}
-</button>
 <button className="p-2 text-gray-500 hover:text-blue-600 cursor-pointer !rounded-button whitespace-nowrap">
 <i className="fas fa-bell text-lg"></i>
 </button>
@@ -246,17 +251,9 @@ onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 {isMobileMenuOpen && (
 <div className="md:hidden bg-white border-t border-gray-200">
 <nav className="container mx-auto px-4 py-3 space-y-3">
-<a href="#" className="block text-gray-600 hover:text-blue-600">Dashboard</a>
-<a href="#" className="block text-gray-600 hover:text-blue-600">Projects</a>
-<a href="#" className="block text-gray-600 hover:text-blue-600">Resources</a>
-{isMentorMode && <a href="#" className="block text-blue-600 font-medium">Mentor Dashboard</a>}
-<button
-onClick={() => setIsMentorMode(!isMentorMode)}
-className="flex items-center px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors !rounded-button whitespace-nowrap"
->
-<i className={`fas fa-${isMentorMode ? 'chalkboard-teacher' : 'user-graduate'} mr-2`}></i>
-{isMentorMode ? 'Mentor Mode' : 'Student Mode'}
-</button>
+<a href="/auth" className="block text-gray-600 hover:text-blue-600">Dashboard</a>
+<a href="/projects" className="block text-gray-600 hover:text-blue-600">Projects</a>
+<a href="/resources" className="block text-gray-600 hover:text-blue-600">Resources</a>
 </nav>
 </div>
 )}
@@ -265,17 +262,8 @@ className="flex items-center px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounde
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
 <div>
 <h1 className="text-3xl font-bold text-gray-900">My Learning</h1>
-{isMentorMode && (
-<p className="text-gray-600 mt-1">Mentor Dashboard - View and manage student progress</p>
-)}
 </div>
 <div className="flex gap-3">
-{isMentorMode && (
-<Button variant="default" className="flex items-center gap-2 !rounded-button whitespace-nowrap">
-<i className="fas fa-users"></i>
-<span className="hidden sm:inline">Student List</span>
-</Button>
-)}
 <Dialog>
 <DialogTrigger asChild>
 <Button variant="outline" className="flex items-center gap-2 !rounded-button whitespace-nowrap">
@@ -283,7 +271,7 @@ className="flex items-center px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounde
 <span className="hidden sm:inline">Customize</span>
 </Button>
 </DialogTrigger>
-<DialogContent className="sm:max-w-[500px]">
+<DialogContent className="sm:max-w-[600px] w-[600px] h-[600px] max-w-full max-h-[90vh] aspect-square overflow-auto">
 <DialogHeader>
 <DialogTitle>Dashboard Preferences</DialogTitle>
 <DialogDescription>
@@ -295,7 +283,7 @@ Customize your dashboard layout and display preferences.
 <h4 className="font-medium">Display Settings</h4>
 <div className="flex items-center justify-between">
 <Label htmlFor="theme-mode">Theme Mode</Label>
-<Select defaultValue="light">
+<Select value={dashboardTheme} onValueChange={setDashboardTheme}>
 <SelectTrigger id="theme-mode" className="w-[180px]">
 <SelectValue placeholder="Select theme" />
 </SelectTrigger>
@@ -387,8 +375,12 @@ Customize your dashboard layout and display preferences.
 </div>
 </div>
 <DialogFooter>
-<Button variant="outline" className="!rounded-button whitespace-nowrap">Reset to Default</Button>
-<Button className="!rounded-button whitespace-nowrap">Save Preferences</Button>
+<Button variant="outline" className="!rounded-button whitespace-nowrap" onClick={() => setFilterApplied(true)}>
+Reset to Default
+</Button>
+<Button className="!rounded-button whitespace-nowrap" onClick={() => { setShowSaveToast(true); setTimeout(() => setShowSaveToast(false), 2000); }}>
+Save Preferences
+</Button>
 </DialogFooter>
 </DialogContent>
 </Dialog>

@@ -240,7 +240,7 @@ return (
 </div>
 
 <div className="flex items-center space-x-4">
-<Button variant="ghost" className="!rounded-button whitespace-nowrap" onClick={() => router.push('/')}>
+<Button variant="ghost" className="!rounded-button whitespace-nowrap" onClick={() => router.push('/auth')}>
 <Home className="w-4 h-4 mr-2" />
 Home
 </Button>

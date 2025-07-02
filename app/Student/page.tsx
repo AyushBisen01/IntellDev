@@ -483,7 +483,7 @@ const App: React.FC = () => {
             </ul>
           </nav>
           <div className="p-4 border-t border-gray-200">
-            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap" onClick={() => router.push('/auth')}>
+            <Button variant="outline" className="w-full flex items-center justify-center !rounded-button whitespace-nowrap" onClick={() => router.push('/')}>
               <LogOut />
               {!sidebarCollapsed && <span className="ml-2">Logout</span>}
             </Button>
